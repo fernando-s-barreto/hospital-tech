@@ -1,0 +1,23 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Recepção{% endblock %}
+{% block content %}
+<h2>Recepção</h2>
+<div class="table-container">
+<table>
+<thead><tr><th>ID</th><th>Funcionário</th><th>Paciente</th><th>Setor</th><th>Data/Hora</th></tr></thead>
+<tbody>
+{% for item in dados %}
+<tr>
+<td>{{ item.id_recepcao }}</td>
+<td>{{ item.funcionario.nome }}</td>
+<td>{{ item.paciente.nome }}</td>
+<td>{{ item.setor.setor }}</td>
+<td>{{ item.data_hora }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="5">Nenhuma recepção encontrada.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

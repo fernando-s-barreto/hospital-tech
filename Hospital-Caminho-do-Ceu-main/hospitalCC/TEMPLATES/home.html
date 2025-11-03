@@ -1,0 +1,25 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Página Inicial{% endblock %}
+{% block content %}
+<h2>HOSPITAL CAMINHO DO CEU</h2>
+<p>Gerencie pacientes, funcionários e consultas.</p>
+
+<div class="dashboard">
+    <div class="card">
+        <h3>Pacientes Cadastrados</h3>
+        <p>{{ pacientes_count|default:"-" }}</p>
+    </div>
+    <div class="card">
+        <h3>Consultas Marcadas</h3>
+        <p>{{ consultas_count|default:"-" }}</p>
+    </div>
+    <div class="card">
+        <h3>Exames Realizados</h3>
+        <p>{{ exames_count|default:"-" }}</p>
+    </div>
+    <div class="card">
+        <h3>Funcionários</h3>
+        <p>{{ funcionarios_count|default:"-" }}</p>
+    </div>
+</div>
+{% endblock %}

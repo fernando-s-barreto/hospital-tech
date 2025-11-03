@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}Meu Site{% endblock %}</title>
+</head>
+<body>
+    <div class="navbar">
+        <ol>
+            <li><a href="{% url 'home' %}">Página Inicial</a></li>
+            <li>Paciente</li>
+            <ul>
+                <li><a href="{% url 'consultar_paciente' %}">Consultar Paciente</a></li>
+                <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+            </ul>
+            <li>Funcionario</li>
+            <ul>
+                <li><a href="{% url 'consultar_funcionario' %}">Consultar Funcionario</a></li>
+                <li><a href="{% url 'cadastrar_funcionario' %}">Cadastrar Funcionario</a></li>
+            </ul>
+            <li>Interação Funcionario Paciente</li>
+            <ul>
+                <li><a href="{% url 'consultar_triagem' %}">Consultar Triagem</a></li>
+                <li><a href="{% url 'cadastrar_triagem' %}">Cadastrar Triagem</a></li>
+            </ul>
+        </ol>
+    </div>
+
+    <main class="content">
+        {% block content %}
+        
+        {% endblock  %}
+    </main>
+</body>
+</html>

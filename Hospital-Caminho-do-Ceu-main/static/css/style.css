@@ -1,0 +1,224 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* ===== LAYOUT GERAL ===== */
+body {
+    display: flex;
+    background-color: #f4f6f9;
+    color: #333;
+    min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.navbar {
+    width: 250px;
+    background: linear-gradient(180deg, #00BCD4, #0097A7);
+    color: white;
+    padding: 20px 15px;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    border-radius: 0 15px 15px 0;
+}
+
+.navbar .lista-main,
+.navbar .lista-main ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.navbar .lista-main > li {
+    font-weight: 600;
+    margin-bottom: 10px;
+    position: relative;
+    padding: 6px 4px;
+    color: rgba(255,255,255,0.95);
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding-left 0.2s;
+}
+
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    padding-left: 15px;
+}
+
+.navbar .sub-lista {
+    background-color: rgba(255, 255, 255, 0.06);
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    padding-left: 8px;
+}
+
+.navbar .sub-lista li a {
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(255,255,255,0.95);
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
+main.content {
+    flex: 1;
+    margin-left: 270px;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* ===== TÍTULOS ===== */
+h2 {
+    color: #00BCD4;
+    font-size: 26px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #00BCD4;
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+/* ===== CARDS ===== */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.09);
+}
+
+.card h3 {
+    color: #007c85;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ===== TABELAS ===== */
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+thead {
+    background-color: #00BCD4;
+    color: white;
+}
+
+th, td {
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tbody tr:hover {
+    background-color: #E0F7FA;
+    transition: 0.18s;
+}
+
+/* ===== FORMULÁRIOS ===== */
+.form-wrap { max-width: 760px; margin: 0 auto; }
+form {
+    background-color: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    margin-top: 18px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d0d7db;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #00BCD4;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,188,212,0.08);
+}
+
+button#submit, form button {
+    background-color: #00BCD4;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* ===== MENSAGENS ===== */
+#message {
+    text-align: center;
+    margin-top: 10px;
+    color: #E53935;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 900px) {
+    main.content { padding: 20px; margin-left: 0; }
+    .navbar { position: relative; width: 100%; height: auto; border-radius: 0; }
+    body { flex-direction: column; }
+    .dashboard { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+    .dashboard { grid-template-columns: 1fr; }
+    th, td { padding: 10px; font-size: 14px; }
+}

@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}HOSPITAL CAMINHO DO CEU{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <aside class="navbar">
+        <ol class="lista-main">
+            <li><a href="{% url 'home' %}">Página Inicial</a></li>
+
+            <li>Paciente
+                <ul class="sub-lista">
+                    <li><a href="{% url 'consultar_paciente' %}">Consultar Paciente</a></li>
+                    <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+                </ul>
+            </li>
+
+            <li>Relação Funcionário - Paciente
+                <ul class="sub-lista">
+                    <li><a href="{% url 'consultar_recepcao' %}">Consultar Recepção</a></li>
+                    <li><a href="{% url 'cadastrar_recepcao' %}">Cadastrar Recepção</a></li>
+                    <li><a href="{% url 'consultar_triagem' %}">Consultar Triagem</a></li>
+                    <li><a href="{% url 'cadastrar_triagem' %}">Cadastrar Triagem</a></li>
+                    <li><a href="{% url 'consultar_consulta' %}">Consultar Consulta</a></li>
+                    <li><a href="{% url 'cadastrar_consulta' %}">Cadastrar Consulta</a></li>
+                    <li><a href="{% url 'consultar_marcacao' %}">Consultar Marcação</a></li>
+                    <li><a href="{% url 'cadastrar_marcacao' %}">Cadastrar Marcação</a></li>
+                    <li><a href="{% url 'consultar_exame_paciente' %}">Consultar Exames</a></li>
+                    <li><a href="{% url 'cadastrar_exame_paciente' %}">Cadastrar Exames</a></li>
+                </ul>
+            </li>
+
+            <li>Funcionário
+                <ul class="sub-lista">
+                    <li><a href="{% url 'consultar_funcionario' %}">Consultar Funcionário</a></li>
+                    <li><a href="{% url 'cadastrar_funcionario' %}">Cadastrar Funcionário</a></li>
+                    <li><a href="{% url 'consultar_cargo' %}">Consultar Cargo</a></li>
+                    <li><a href="{% url 'cadastrar_cargo' %}">Cadastrar Cargo</a></li>
+                </ul>
+            </li>
+
+            <li>Instituição
+                <ul class="sub-lista">
+                    <li><a href="{% url 'consultar_exame' %}">Consultar Exames</a></li>
+                    <li><a href="{% url 'cadastrar_exame' %}">Cadastrar Exames</a></li>
+                    <li><a href="{% url 'consultar_laboratorio' %}">Consultar Laboratório</a></li>
+                    <li><a href="{% url 'cadastrar_laboratorio' %}">Cadastrar Laboratório</a></li>
+                    <li><a href="{% url 'consultar_setor' %}">Consultar Setor</a></li>
+                    <li><a href="{% url 'cadastrar_setor' %}">Cadastrar Setor</a></li>
+                </ul>
+            </li>
+        </ol>
+    </aside>
+
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

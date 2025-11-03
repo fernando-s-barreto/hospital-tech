@@ -1,0 +1,24 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Pacientes{% endblock %}
+{% block content %}
+<h2>Pacientes</h2>
+<div class="table-container">
+<table>
+<thead><tr><th>CPF</th><th>Nome</th><th>Nascimento</th><th>Endereço</th><th>Tel</th><th>Responsável</th></tr></thead>
+<tbody>
+{% for item in dados %}
+<tr>
+<td>{{ item.CPF }}</td>
+<td>{{ item.nome }}</td>
+<td>{{ item.data_nasc }}</td>
+<td>{{ item.endereco }}</td>
+<td>{{ item.tel_paciente }}</td>
+<td>{{ item.tel_responsavel }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="6">Nenhum paciente encontrado.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}
