@@ -2,11 +2,15 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', home, name='home')
-]
 
-# Cadastros
-urlpatterns += [
+    # LOGIN / LOGOUT
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+
+    # HOME
+    path('', home, name='home'),
+
+    # CADASTROS
     path('cadastrar-paciente/', cadastrar_paciente, name='cadastrar_paciente'),
     path('cadastrar-triagem/', cadastrar_triagem, name='cadastrar_triagem'),
     path('cadastrar-funcionario/', cadastrar_funcionario, name='cadastrar_funcionario'),
@@ -18,10 +22,8 @@ urlpatterns += [
     path('cadastrar-laboratorio/', cadastrar_laboratorio, name='cadastrar_laboratorio'),
     path('cadastrar-exame/', cadastrar_exame, name='cadastrar_exame'),
     path('cadastrar-exame-paciente/', cadastrar_exame_paciente, name='cadastrar_exame_paciente'),
-]
 
-# Consultas
-urlpatterns += [
+    # CONSULTAS
     path('consultar-paciente/', consultar_paciente, name='consultar_paciente'),
     path('consultar-funcionario/', consultar_funcionario, name='consultar_funcionario'),
     path('consultar-triagem/', consultar_triagem, name='consultar_triagem'),

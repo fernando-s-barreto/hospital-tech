@@ -3,64 +3,134 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}HOSPITAL CAMINHO DO CEU{% endblock %}</title>
+    <title>{% block title %}Hospital Tech{% endblock %}</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script defer src="{% static 'js/menu.js' %}"></script>
 </head>
+
 <body>
-    <aside class="navbar">
-        <ol class="lista-main">
-            <li><a href="{% url 'home' %}">Página Inicial</a></li>
 
-            <li>Paciente
-                <ul class="sub-lista">
-                    <li><a href="{% url 'consultar_paciente' %}">Consultar Paciente</a></li>
-                    <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-hospital fa-xl"></i>
+            <span>Hospital Tech</span>
+        </div>
+
+        <ul class="menu">
+
+            <li class="menu-item">
+                <a href="{% url 'home' %}">
+                    <i class="fa-solid fa-house"></i>
+                    Início
+                </a>
+            </li>
+
+            <li class="menu-item has-submenu">
+                <div class="submenu-title">
+                    <i class="fa-solid fa-user-injured"></i>
+                    Pacientes
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <ul class="submenu">
+                    <li><a href="{% url 'consultar_paciente' %}">Consultar</a></li>
+                    <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar</a></li>
                 </ul>
             </li>
 
-            <li>Relação Funcionário - Paciente
-                <ul class="sub-lista">
-                    <li><a href="{% url 'consultar_recepcao' %}">Consultar Recepção</a></li>
-                    <li><a href="{% url 'cadastrar_recepcao' %}">Cadastrar Recepção</a></li>
-                    <li><a href="{% url 'consultar_triagem' %}">Consultar Triagem</a></li>
-                    <li><a href="{% url 'cadastrar_triagem' %}">Cadastrar Triagem</a></li>
-                    <li><a href="{% url 'consultar_consulta' %}">Consultar Consulta</a></li>
-                    <li><a href="{% url 'cadastrar_consulta' %}">Cadastrar Consulta</a></li>
-                    <li><a href="{% url 'consultar_marcacao' %}">Consultar Marcação</a></li>
-                    <li><a href="{% url 'cadastrar_marcacao' %}">Cadastrar Marcação</a></li>
-                    <li><a href="{% url 'consultar_exame_paciente' %}">Consultar Exames</a></li>
-                    <li><a href="{% url 'cadastrar_exame_paciente' %}">Cadastrar Exames</a></li>
+            <li class="menu-item has-submenu">
+                <div class="submenu-title">
+                    <i class="fa-solid fa-user-check"></i>
+                    Atendimento
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <ul class="submenu">
+                    <li><a href="{% url 'consultar_triagem' %}">Triagem</a></li>
+                    <li><a href="{% url 'cadastrar_triagem' %}">Nova Triagem</a></li>
+                    <li><a href="{% url 'consultar_consulta' %}">Consultas</a></li>
+                    <li><a href="{% url 'cadastrar_consulta' %}">Nova Consulta</a></li>
+                    <li><a href="{% url 'consultar_marcacao' %}">Marcações</a></li>
+                    <li><a href="{% url 'cadastrar_marcacao' %}">Marcar</a></li>
                 </ul>
             </li>
 
-            <li>Funcionário
-                <ul class="sub-lista">
-                    <li><a href="{% url 'consultar_funcionario' %}">Consultar Funcionário</a></li>
-                    <li><a href="{% url 'cadastrar_funcionario' %}">Cadastrar Funcionário</a></li>
-                    <li><a href="{% url 'consultar_cargo' %}">Consultar Cargo</a></li>
-                    <li><a href="{% url 'cadastrar_cargo' %}">Cadastrar Cargo</a></li>
+            <li class="menu-item has-submenu">
+                <div class="submenu-title">
+                    <i class="fa-solid fa-user-nurse"></i>
+                    Funcionários
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <ul class="submenu">
+                    <li><a href="{% url 'consultar_funcionario' %}">Consultar</a></li>
+                    <li><a href="{% url 'cadastrar_funcionario' %}">Cadastrar</a></li>
+                    <li><a href="{% url 'consultar_cargo' %}">Cargos</a></li>
+                    <li><a href="{% url 'cadastrar_cargo' %}">Novo Cargo</a></li>
                 </ul>
             </li>
 
-            <li>Instituição
-                <ul class="sub-lista">
-                    <li><a href="{% url 'consultar_exame' %}">Consultar Exames</a></li>
-                    <li><a href="{% url 'cadastrar_exame' %}">Cadastrar Exames</a></li>
-                    <li><a href="{% url 'consultar_laboratorio' %}">Consultar Laboratório</a></li>
-                    <li><a href="{% url 'cadastrar_laboratorio' %}">Cadastrar Laboratório</a></li>
-                    <li><a href="{% url 'consultar_setor' %}">Consultar Setor</a></li>
-                    <li><a href="{% url 'cadastrar_setor' %}">Cadastrar Setor</a></li>
+            <li class="menu-item has-submenu">
+                <div class="submenu-title">
+                    <i class="fa-solid fa-vials"></i>
+                    Exames
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <ul class="submenu">
+                    <li><a href="{% url 'consultar_exame_paciente' %}">Exames do Paciente</a></li>
+                    <li><a href="{% url 'cadastrar_exame_paciente' %}">Registrar Exame</a></li>
+                    <li><a href="{% url 'consultar_exame' %}">Tipos de Exame</a></li>
+                    <li><a href="{% url 'cadastrar_exame' %}">Novo Exame</a></li>
                 </ul>
             </li>
-        </ol>
+
+            <li class="menu-item has-submenu">
+                <div class="submenu-title">
+                    <i class="fa-solid fa-building-columns"></i>
+                    Instituição
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <ul class="submenu">
+                    <li><a href="{% url 'consultar_laboratorio' %}">Laboratórios</a></li>
+                    <li><a href="{% url 'cadastrar_laboratorio' %}">Novo Lab</a></li>
+                    <li><a href="{% url 'consultar_setor' %}">Setores</a></li>
+                    <li><a href="{% url 'cadastrar_setor' %}">Novo Setor</a></li>
+                </ul>
+            </li>
+
+        </ul>
     </aside>
+
+    <header class="topbar">
+        <span>Bem-vindo(a), {{ request.session.usuario_nome }}</span>
+
+        <div style="display: flex; gap: 14px; align-items: center;">
+
+            <button id="themeToggle">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <a href="{% url 'logout' %}" 
+               style="padding:10px 16px; background:#d9534f; color:white;
+                      border-radius:8px; text-decoration:none; font-weight:600;">
+                Sair
+            </a>
+        </div>
+    </header>
 
     <main class="content">
         {% block content %}
         {% endblock %}
     </main>
+
 </body>
 </html>

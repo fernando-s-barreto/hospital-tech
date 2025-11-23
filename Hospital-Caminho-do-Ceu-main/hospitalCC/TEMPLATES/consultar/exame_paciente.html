@@ -1,23 +1,86 @@
-{% extends 'baseFuncionario.html' %}
-{% block title %}Exames do Paciente{% endblock %}
-{% block content %}
-<h2>Exames Realizados</h2>
-<div class="table-container">
-<table>
-<thead><tr><th>ID</th><th>Paciente</th><th>Exame</th><th>Realização</th><th>Retirada</th></tr></thead>
-<tbody>
-{% for item in dados %}
-<tr>
-<td>{{ item.id_exame_paciente }}</td>
-<td>{{ item.paciente.nome }}</td>
-<td>{{ item.exame.nome }}</td>
-<td>{{ item.data_hora_realizacao }}</td>
-<td>{{ item.data_hora_retirada }}</td>
-</tr>
-{% empty %}
-<tr><td colspan="5">Nenhum exame encontrado.</td></tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #e9eef2;
+            font-family: Poppins, sans-serif;
+        }
+
+        .login-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            width: 350px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #00b4d8;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        button:hover {
+            background: #0077a4;
+        }
+
+        .erro {
+            background: #ffd4d4;
+            padding: 10px;
+            border-radius: 6px;
+            color: #7a1b1b;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h2><i class="fa-solid fa-hospital"></i> Hospital Tech</h2>
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="cpf" placeholder="CPF" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+</body>
+</html>

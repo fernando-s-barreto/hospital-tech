@@ -1,23 +1,107 @@
 from django.shortcuts import render, redirect
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
+
 from .forms import *
+from .models import *
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import check_password
+from django.shortcuts import render, redirect
+from .models import Funcionario
+
+def login_view(request):
+    if request.method == "POST":
+        cpf = request.POST.get("cpf")
+        senha = request.POST.get("senha")
+
+        try:
+            user = Funcionario.objects.get(id_func=cpf)
+        except:
+            return render(request, "login.html", {"erro": "CPF não encontrado."})
+
+        if check_password(senha, user.senha):
+            request.session["usuario_id"] = user.id_func
+            request.session["usuario_nome"] = user.nome
+            return redirect("home")
+
+        return render(request, "login.html", {"erro": "Senha incorreta."})
+
+    return render(request, "login.html")
+
+
+def logout_view(request):
+    request.session.flush()
+    return redirect("login")
+
 
 def home(request):
-    return render(request, 'home.html')
+    if not request.session.get("usuario_id"):
+        return redirect("login")
 
+    pacientes_count = Paciente.objects.count()
+    consultas_count = Consulta_medico_paciente.objects.count()
+    exames_count = Exame_paciente.objects.count()
+    funcionarios_count = Funcionario.objects.count()
+
+    ultimos_pacientes = Paciente.objects.order_by('-CPF')[:5]
+
+    consultas_mes_qs = (
+        Consulta_medico_paciente.objects
+        .annotate(mes=TruncMonth("data_hora"))
+        .values("mes")
+        .annotate(total=Count("id_consulta"))
+        .order_by("mes")
+    )
+
+    meses_labels = [
+        c["mes"].strftime("%b/%Y") if c["mes"] else ""
+        for c in consultas_mes_qs
+    ]
+    consultas_por_mes = [c["total"] for c in consultas_mes_qs]
+
+    exames_setor_qs = (
+        Exame_paciente.objects
+        .values("exame__laboratorio__nome")
+        .annotate(total=Count("id_exame_paciente"))
+        .order_by("exame__laboratorio__nome")
+    )
+
+    setores_labels = [e["exame__laboratorio__nome"] or "" for e in exames_setor_qs]
+    exames_por_setor = [e["total"] for e in exames_setor_qs]
+
+    contexto = {
+        "pacientes_count": pacientes_count,
+        "consultas_count": consultas_count,
+        "exames_count": exames_count,
+        "funcionarios_count": funcionarios_count,
+        "ultimos_pacientes": ultimos_pacientes,
+        "meses_labels": meses_labels,
+        "consultas_por_mes": consultas_por_mes,
+        "setores_labels": setores_labels,
+        "exames_por_setor": exames_por_setor,
+    }
+
+    return render(request, "home.html", contexto)
+
+
+# ===============================
+# CADASTROS (FORM.SAVE)
+# ===============================
 def cadastrar_paciente(request):
     titulo = 'Paciente'
     if request.method == "POST":
         form = PacienteForm(request.POST)
-        message = 'Paciente não foi cadastrado!'
         try:
             form.save()
-            message = 'Paciente cadastrada.'
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
+            message = 'Paciente cadastrado.'
         except Exception as e:
-            message = e
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
+            message = str(e)
+        return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = PacienteForm()
-    return render(request, 'cadastrarBase.html', {'form': form, 'message' : '', 'titulo' : titulo})
+    return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_triagem(request):
     titulo = 'Triagem'
@@ -26,27 +110,29 @@ def cadastrar_triagem(request):
         try:
             form.save()
             message = 'Triagem cadastrada.'
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
         except Exception as e:
-            print(e)
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
+            message = str(e)
+        return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = TriagemForm()
-    return render(request, 'cadastrarBase.html', {'form': form, 'message' : '', 'titulo' : titulo})
+    return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_funcionario(request):
-    titulo = 'Funcionario'
+    titulo = 'Funcionário'
     if request.method == "POST":
         form = FuncionarioForm(request.POST)
-        message = 'Funcionário não foi cadastrado!'
         try:
             form.save()
             message = 'Funcionário cadastrado.'
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
         except Exception as e:
-            message = e
-            return render(request, 'cadastrarBase.html', {'form': form, 'message' : message, 'titulo' : titulo})
+            message = str(e)
+
+        return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = FuncionarioForm()
-    return render(request, 'cadastrarBase.html', {'form': form, 'message' : '', 'titulo' : titulo})
+    return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_cargo(request):
     titulo = 'Cargo'
@@ -57,9 +143,12 @@ def cadastrar_cargo(request):
             message = 'Cargo cadastrado.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = CargoForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_setor(request):
     titulo = 'Setor'
@@ -70,9 +159,12 @@ def cadastrar_setor(request):
             message = 'Setor cadastrado.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = SetorForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_recepcao(request):
     titulo = 'Recepção'
@@ -83,9 +175,12 @@ def cadastrar_recepcao(request):
             message = 'Recepção cadastrada.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = RecepcaoFuncionarioPacienteForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_consulta(request):
     titulo = 'Consulta'
@@ -96,12 +191,15 @@ def cadastrar_consulta(request):
             message = 'Consulta cadastrada.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = ConsultaMedicoPacienteForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
 
+
 def cadastrar_marcacao(request):
-    titulo = 'Marcar Consulta'
+    titulo = 'Marcação'
     if request.method == "POST":
         form = MarcarConsultaForm(request.POST)
         try:
@@ -109,9 +207,12 @@ def cadastrar_marcacao(request):
             message = 'Consulta marcada.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = MarcarConsultaForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_laboratorio(request):
     titulo = 'Laboratório'
@@ -122,9 +223,12 @@ def cadastrar_laboratorio(request):
             message = 'Laboratório cadastrado.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = LaboratorioForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_exame(request):
     titulo = 'Exame'
@@ -135,9 +239,12 @@ def cadastrar_exame(request):
             message = 'Exame cadastrado.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = ExameForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
+
 
 def cadastrar_exame_paciente(request):
     titulo = 'Exame do Paciente'
@@ -148,13 +255,19 @@ def cadastrar_exame_paciente(request):
             message = 'Exame do paciente cadastrado.'
         except Exception as e:
             message = str(e)
+
         return render(request, 'cadastrarBase.html', {'form': form, 'message': message, 'titulo': titulo})
+
     form = ExamePacienteForm()
     return render(request, 'cadastrarBase.html', {'form': form, 'message': '', 'titulo': titulo})
 
+
+# ===========================================
+# CONSULTAS (LISTAGEM)
+# ===========================================
 def consultar_paciente(request):
     dados = Paciente.objects.all()
-    return render(request, 'consultar\paciente.html', {'dados': dados})
+    return render(request, 'consultar/paciente.html', {'dados': dados})
 
 def consultar_funcionario(request):
     dados = Funcionario.objects.select_related('cargo').all()
@@ -195,3 +308,9 @@ def consultar_exame(request):
 def consultar_exame_paciente(request):
     dados = Exame_paciente.objects.select_related('paciente', 'exame').all()
     return render(request, 'consultar/exame_paciente.html', {'dados': dados})
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import CargoForm
+from .models import Cargo
+
+
+
