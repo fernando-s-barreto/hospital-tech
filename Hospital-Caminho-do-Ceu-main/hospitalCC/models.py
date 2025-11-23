@@ -13,6 +13,7 @@ class Cargo(models.Model):
 class Funcionario(models.Model):
     id_func = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
+    login = models.CharField(max_length=50, unique=True)
     is_medico = models.BooleanField(default=False)
     senha = models.CharField(max_length=128)
     cargo = models.ForeignKey(Cargo, on_delete=models.PROTECT)
@@ -24,7 +25,6 @@ class Funcionario(models.Model):
 
     def __str__(self):
         return self.nome
-
 
 
 class Paciente(models.Model):

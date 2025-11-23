@@ -12,13 +12,13 @@ from .models import Funcionario
 
 def login_view(request):
     if request.method == "POST":
-        cpf = request.POST.get("cpf")
+        login_user = request.POST.get("login")
         senha = request.POST.get("senha")
 
         try:
-            user = Funcionario.objects.get(id_func=cpf)
-        except:
-            return render(request, "login.html", {"erro": "CPF não encontrado."})
+            user = Funcionario.objects.get(login=login_user)
+        except Funcionario.DoesNotExist:
+            return render(request, "login.html", {"erro": "Login não encontrado."})
 
         if check_password(senha, user.senha):
             request.session["usuario_id"] = user.id_func
@@ -85,9 +85,7 @@ def home(request):
     return render(request, "home.html", contexto)
 
 
-# ===============================
-# CADASTROS (FORM.SAVE)
-# ===============================
+
 def cadastrar_paciente(request):
     titulo = 'Paciente'
     if request.method == "POST":
