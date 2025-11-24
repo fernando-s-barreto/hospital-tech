@@ -1,0 +1,81 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2>Hospital Tech</h2>
+<p class="subtitulo">Gerencie pacientes, consultas, exames e funcionários em um único painel.</p>
+
+<div class="dashboard">
+    <a href="{% url 'consultar_paciente' %}" class="card">
+        <h3>Pacientes Cadastrados</h3>
+        <p>{{ pacientes_count }}</p>
+    </a>
+
+    <a href="{% url 'consultar_consulta' %}" class="card">
+        <h3>Consultas Marcadas</h3>
+        <p>{{ consultas_count }}</p>
+    </a>
+
+    <a href="{% url 'consultar_exame' %}" class="card">
+        <h3>Exames Realizados</h3>
+        <p>{{ exames_count }}</p>
+    </a>
+
+    <a href="{% url 'consultar_funcionario' %}" class="card">
+        <h3>Funcionários</h3>
+        <p>{{ funcionarios_count }}</p>
+    </a>
+</div>
+
+<div class="faixa-central">
+    <h3>Bem-vindo ao Sistema Interno</h3>
+    <p>Acompanhe o desempenho do hospital em tempo real.</p>
+</div>
+
+<h3 style="margin-top: 25px;">Estatísticas Gerais</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 10px;">
+
+    <div class="card">
+        <h3>Consultas por Mês</h3>
+        <canvas id="grafConsultas"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>Exames por Setor</h3>
+        <canvas id="grafExames"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctxConsultas = document.getElementById("grafConsultas");
+new Chart(ctxConsultas, {
+    type: "line",
+    data: {
+        labels: {{ meses_labels|safe }},
+        datasets: [{
+            label: "Consultas",
+            data: {{ consultas_por_mes|safe }},
+            borderWidth: 3
+        }]
+    }
+});
+
+const ctxExames = document.getElementById("grafExames");
+new Chart(ctxExames, {
+    type: "bar",
+    data: {
+        labels: {{ setores_labels|safe }},
+        datasets: [{
+            label: "Exames",
+            data: {{ exames_por_setor|safe }},
+            borderWidth: 3
+        }]
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Triagens{% endblock %}
+{% block content %}
+<h2>Triagens</h2>
+<div class="table-container">
+<table>
+<thead><tr><th>ID</th><th>Funcionário</th><th>Paciente</th><th>Altura</th><th>Peso</th><th>Temp</th><th>Pressão</th><th>Data/Hora</th></tr></thead>
+<tbody>
+{% for item in dados %}
+<tr>
+<td>{{ item.id_triagem }}</td>
+<td>{{ item.funcionario.nome }}</td>
+<td>{{ item.paciente.nome }}</td>
+<td>{{ item.altura }}</td>
+<td>{{ item.peso }}</td>
+<td>{{ item.temperatura }}</td>
+<td>{{ item.pressao_sistolica }}/{{ item.pressao_diastolica }}</td>
+<td>{{ item.data_hora }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="8">Nenhuma triagem encontrada.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

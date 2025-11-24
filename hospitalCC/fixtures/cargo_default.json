@@ -1,0 +1,9 @@
+[
+    {
+        "model": "hospitalCC.cargo",
+        "pk": 1,
+        "fields": {
+            "nome": "Administrador"
+        }
+    }
+]

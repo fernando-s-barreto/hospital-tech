@@ -1,0 +1,24 @@
+{% extends 'baseFuncionario.html' %}
+{% block title %}Cadastrar {{ titulo }}{% endblock %}
+
+{% block content %}
+
+<h2>Cadastrar {{ titulo }}</h2>
+<p class="subtitulo">Preencha os dados abaixo para cadastrar {{ titulo }}.</p>
+
+<!-- Mensagem de retorno -->
+{% if message %}
+<div class="alerta">
+    {{ message }}
+</div>
+{% endif %}
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Salvar</button>
+    </form>
+</div>
+
+{% endblock %}

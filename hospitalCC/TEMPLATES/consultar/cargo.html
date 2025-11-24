@@ -1,0 +1,28 @@
+{% extends 'baseFuncionario.html' %}
+
+{% block title %}Cargos{% endblock %}
+
+{% block content %}
+<h2>Cargos</h2>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in dados %}
+            <tr>
+                <td>{{ item.id_cargo }}</td>
+                <td>{{ item.nome }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">Nenhum cargo encontrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
